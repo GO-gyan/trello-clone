@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { Activity, CreditCard, Layout, Settings } from "lucide-react";
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 export type Organization = {
@@ -20,7 +21,7 @@ interface NavItemProps {
     organization: Organization;
     onExpand: (id: string) => void;
 }
-function NavItem({ isActive, isExpanded, organization, onExpand }: NavItemProps) {
+const NavItem = ({ isActive, isExpanded, organization, onExpand }: NavItemProps) => {
     const router = useRouter();
     const pathname = usePathname();
     const routes = [
@@ -89,6 +90,17 @@ function NavItem({ isActive, isExpanded, organization, onExpand }: NavItemProps)
             </AccordionContent>
         </AccordionItem>
     );
-}
+};
+
+NavItem.Skeleton = function SkeletonNavItem() {
+    return (
+        <div className="flex items-center gap-x-2">
+            <div className="w-10 h-10 relative shrink-0">
+                <Skeleton className="w-full h-full absolute" />
+            </div>
+            <Skeleton className="w-full h-10" />
+        </div>
+    );
+};
 
 export default NavItem;
