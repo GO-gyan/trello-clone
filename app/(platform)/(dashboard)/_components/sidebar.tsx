@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/Link";
+import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
