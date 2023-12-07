@@ -1,7 +1,26 @@
 import { User2, HelpCircle } from "lucide-react";
+import { db } from "@/lib/db";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs";
 import Hint from "@/components/hint";
 import FormPopover from "@/components/form/form-popover";
-function BoardList() {
+import { Skeleton } from "@/components/ui/skeleton";
+const BoardList = async () => {
+    const { orgId } = auth();
+
+    if (!orgId) {
+        return redirect("/select-org");
+    }
+
+    const boards = await db.board.findMany({
+        where: {
+            orgId: orgId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
     return (
         <div className="space-x-4">
             <div className="flex items-center font-semibold text-lg text-neutral-700">
@@ -9,6 +28,17 @@ function BoardList() {
                 Your boards
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {boards.map((board) => (
+                    <Link
+                        key={board.id}
+                        href={`/board/${board.id}`}
+                        className="group aspect-video relative bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
+                        style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
+                    >
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
+                        <p className="relative text-white font-semibold">{board.title}</p>
+                    </Link>
+                ))}
                 <FormPopover sideOffset={10} side="right">
                     <div
                         role="button"
@@ -29,6 +59,20 @@ function BoardList() {
             </div>
         </div>
     );
-}
+};
 
+BoardList.Skeleton = function BoardListSkeleton() {
+    return (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+            <Skeleton className="aspect-video w-full h-full p-2" />
+        </div>
+    );
+};
 export default BoardList;
