@@ -59,7 +59,7 @@ const NavItem = ({ isActive, isExpanded, organization, onExpand }: NavItemProps)
                     isActive && !isExpanded && "bg-sky-500/10 text-sky-700"
                 )}
             >
-                <div class="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-2">
                     <div className="w-7 h-7 relative">
                         <Image
                             fill

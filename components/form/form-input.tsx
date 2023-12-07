@@ -25,7 +25,7 @@ interface FormInputProps {
     minLength?: number;
     readOnly?: boolean;
     tabIndex?: number;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
