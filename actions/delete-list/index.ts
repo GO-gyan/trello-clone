@@ -6,7 +6,6 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { DeleteList } from "./schema";
 import { createSafeAction } from "@/lib/create-safe-actions";
-import { redirect } from "next/navigation";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
     const { userId, orgId } = auth();

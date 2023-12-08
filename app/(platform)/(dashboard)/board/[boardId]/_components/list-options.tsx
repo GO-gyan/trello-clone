@@ -10,6 +10,7 @@ import FormSubmit from "@/components/form/form-submit";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { ElementRef, useRef } from "react";
+import { copyList } from "@/actions/copy-list";
 
 interface ListOptionsProps {
     onAddCard: () => void;
@@ -28,12 +29,30 @@ function ListOptions({ onAddCard, data }: ListOptionsProps) {
             toast.error(error);
         },
     });
+
+    const { execute: executeCopy } = useAction(copyList, {
+        onSuccess: () => {
+            toast.success(`List "${data.title}" copied!`);
+            closeRef.current?.click();
+        },
+        onError: (error) => {
+            toast.error(error);
+        },
+    });
     const onDelete = (formData: FormData) => {
         const id = formData.get("id") as string;
         const boardId = formData.get("boardId") as string;
 
         executeDelete({ id, boardId });
     };
+
+    const onCopy = (formData: FormData) => {
+        const id = formData.get("id") as string;
+        const boardId = formData.get("boardId") as string;
+
+        executeCopy({ id, boardId });
+    };
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -55,7 +74,7 @@ function ListOptions({ onAddCard, data }: ListOptionsProps) {
                 >
                     Add card...
                 </Button>
-                <form>
+                <form action={onCopy}>
                     <input type="hidden" name="id" value={data.id} />
                     <input type="hidden" name="boardId" value={data.boardId} />
                     <FormSubmit
