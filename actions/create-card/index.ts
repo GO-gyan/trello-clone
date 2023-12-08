@@ -1,0 +1,65 @@
+"use server";
+
+import { InputType, ReturnType } from "./types";
+import { auth } from "@clerk/nextjs";
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { CreateCard } from "./schema";
+import { createSafeAction } from "@/lib/create-safe-actions";
+
+const handler = async (data: InputType): Promise<ReturnType> => {
+    const { userId, orgId } = auth();
+    if (!userId || !orgId) {
+        return {
+            error: "Not authenticated"
+        };
+    }
+
+    const { title, boardId, listId } = data;
+    let card;
+    try {
+        const list = await db.list.findUnique({
+            where: {
+                id: listId,
+                board: {
+                    orgId
+                }
+            }
+        });
+        if (!list) {
+            return {
+                error: "List not found"
+            };
+        }
+
+        const lastCard = await db.card.findFirst({
+            where: {
+                listId
+            },
+            orderBy: {
+                order: "desc"
+            },
+        });
+        const newOrder = lastCard ? lastCard.order + 1 : 1;
+        card = await db.card.create({
+            data: {
+                title,
+                listId,
+                order: newOrder
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        return {
+            error: "Failed to create"
+        }
+
+    }
+    revalidatePath(`/board/${boardId}`);
+
+    return {
+        data: card
+    };
+}
+
+export const createCard = createSafeAction(CreateCard, handler);
