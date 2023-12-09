@@ -20,7 +20,7 @@ function ListContainer({ data, boardId }: ListContainerProps) {
                 <ListItem key={list.id} data={list} index={index} />
             ))}
             <ListForm />
-            <div class="flex-shrink-0 w-1" />
+            <div className="flex-shrink-0 w-1" />
         </ol>
     );
 }
