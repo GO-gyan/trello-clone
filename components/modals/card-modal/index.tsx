@@ -16,6 +16,8 @@ import React from "react";
 import { CardWithList } from "@/types";
 import { fetcher } from "@/lib/fetcher";
 import CardModalHeader from "./header";
+import Description from "./description";
+import Actions from "./actions";
 
 function CardModal() {
     const id = useCardModal((state) => state.id);
@@ -30,6 +32,14 @@ function CardModal() {
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
                 {!cardData ? <CardModalHeader.Skeleton /> : <CardModalHeader data={cardData} />}
+                <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+                    <div className="col-span-3">
+                        <div className="w-full space-y-6">
+                            {!cardData ? <Description.Skeleton /> : <Description data={cardData} />}
+                        </div>
+                    </div>
+                    {!cardData ? <Actions.Skeleton /> : <Actions data={cardData} />}
+                </div>
             </DialogContent>
         </Dialog>
     );
