@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { InputType, ReturnType } from "./types";
 import { createSafeAction } from "@/lib/create-safe-actions";
 import { CreateBoard } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -44,7 +46,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
                 imageLinkHTML,
                 imageUserName,
             }
-        })
+        });
+        await createAuditLog({
+            entityTitle: board.title,
+            entityId: board.id,
+            entityType: ENTITY_TYPE.BOARD,
+            action: ACTION.CREATE,
+        });
     } catch (error) {
         return {
             error: "Something went wrong"

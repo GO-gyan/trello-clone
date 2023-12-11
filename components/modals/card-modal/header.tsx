@@ -23,6 +23,9 @@ function CardModalHeader({ data }: CardModalHeaderProps) {
             queryClient.invalidateQueries({
                 queryKey: ["card", cardData.id],
             });
+            queryClient.invalidateQueries({
+                queryKey: ["card-logs", cardData.id],
+            });
             toast.success(`Renamed to "${cardData.title}"`);
             setTitle(cardData.title);
         },
