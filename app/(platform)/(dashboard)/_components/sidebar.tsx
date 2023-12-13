@@ -54,13 +54,7 @@ function Sidebar({ storageKey = "t-sidebar-state" }: SidebarProps) {
                     </Link>
                 </Button>
             </div>
-            <Accordion
-                defaultValue={defaultAccordionValue}
-                type="multiple"
-                collapsible
-                onValueChange={onExpand}
-                className="space-y-2"
-            >
+            <Accordion type="multiple" defaultValue={defaultAccordionValue} className="space-y-2">
                 {userMemberships.data?.map(({ organization }) => (
                     <NavItem
                         key={organization.id}

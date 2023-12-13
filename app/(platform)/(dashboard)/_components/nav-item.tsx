@@ -63,7 +63,7 @@ const NavItem = ({ isActive, isExpanded, organization, onExpand }: NavItemProps)
                     <div className="w-7 h-7 relative">
                         <Image
                             fill
-                            src={organization.imageUrl}
+                            src={organization.imageUrl || ""}
                             alt={organization.name}
                             className="rounded-sm object-cover"
                         />

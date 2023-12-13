@@ -12,7 +12,7 @@ interface UseActionOptions<TOutput> {
 
 export const useAction = <TInput, TOutput>(
     action: Action<TInput, TOutput>,
-    options?: UseActionOptions<TOutput> = {}
+    options: UseActionOptions<TOutput> = {}
 ) => {
     const [fieldErrors, setFieldErrors] = useState<FieldErrors<TInput> | undefined>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
@@ -25,18 +25,18 @@ export const useAction = <TInput, TOutput>(
 
             try {
                 const result = await action(input);
-                if(!result) return;
+                if (!result) return;
                 if (result.error) {
                     setError(result.error);
                     options.onError?.(result.error);
                 }
                 setFieldErrors(result.fieldErrors);
-                
+
                 if (result.data) {
                     setData(result.data);
                     options.onSuccess?.(result.data);
                 }
-               
+
             } finally {
                 setIsLoading(false);
                 options.onComplete?.();

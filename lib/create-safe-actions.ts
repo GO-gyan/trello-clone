@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export type FieldErrors<T> = {
-    [Key in keyof T]?: string;
+    [Key in keyof T]?: string[];
 }
 
 export type ActionState<TInput, TOutput> = {
